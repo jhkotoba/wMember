@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" th:href="@{http://{baseUrl}/resources/common/common.css(baseUrl=${baseUrl})}" type="text/css"/>
+    <script th:src="@{http://{baseUrl}/resources/common/common.js(baseUrl=${baseUrl})}"></script>
+</head>
+<body>	
+	<section>
+		<script th:src="@{http://{baseUrl}/resources/templates/login/login.js(baseUrl=${baseUrl})}"></script>
+		<div>
+			<span>USER</span>
+			<input id="userId" type="text"/>			
+		</div>
+		<div>
+			<span>PASS</span>
+			<input id="pass" type="password"/>	
+		</div>
+		<div>
+			<button onclick="login()">login</button>
+			<button>join</button>
+		</div>
+	</section>
+</body>
+</html>
