@@ -1,7 +1,10 @@
 function login(){
 	
-	let userId = document.getElementById("userId").value;
-	let pass = document.getElementById("pass").value;
+	let crypt = new JSEncrypt();
+	crypt.setPrivateKey(MEM.PUBLIC_KEY);
+	
+	let userId = crypt.encrypt(document.getElementById("userId").value);
+	let pass = crypt.encrypt(document.getElementById("pass").value);
 	
 	fetch("/api/member/loginProcess", {
         method: "POST",
@@ -18,6 +21,7 @@ function login(){
     })
     .then(response => response.json())            
     .then(data => {
+		console.log("data:", data);
 		if(data.isLogin){		
 			document.location.href = 
 				document.location.href.substring(document.location.href.lastIndexOf("rtnUrl") + 7, document.location.href.length);
