@@ -26,7 +26,7 @@ public class LoginRepository {
 		
 		return client.execute(query.toString()).fetch().one()			
 			.map(map -> {
-				map.put(Constant.REQ_PASSWORD, model.getPassword());
+				map.put("reqPassword", model.getPassword());
 				return Utils.converterCamelCase(map);
 			});
 	}

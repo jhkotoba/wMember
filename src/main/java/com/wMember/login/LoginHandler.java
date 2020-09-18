@@ -46,8 +46,8 @@ public class LoginHandler {
 	
 	public Mono<ServerResponse> loginProcess(ServerRequest request){
 		Map<String, Object> result = new HashMap<String, Object>();
-		result.put(Constant.IS_LOGIN, false);
-		result.put(Constant.RESULT_CODE, Constant.RESULT_CODE_NO_USER);
+		result.put("isLogin", false);
+		result.put("resultCode", Constant.RESULT_CODE_NO_USER);
 		
 		return request.bodyToMono(LoginModel.class)
 			.flatMap(model -> {
@@ -61,39 +61,39 @@ public class LoginHandler {
 					
 					try {
 						
-						String reqPassword = AES256Util.decode(map.get(Constant.REQ_PASSWORD).toString(), AES256Properties.getPrivateKey());
-						String salt = map.get(Constant.SALT).toString();
+						String reqPassword = AES256Util.decode(map.get("reqPassword").toString(), AES256Properties.getPrivateKey());
+						String salt = map.get("salt").toString();
 						
-						MessageDigest md = MessageDigest.getInstance(Constant.SHA_512);
+						MessageDigest md = MessageDigest.getInstance("SHA-512");
 						md.update(salt.getBytes());
 						md.update(reqPassword.getBytes());
 						String password = String.format(Constant.PASSWORD_FORMAT, new BigInteger(1, md.digest()));
 						
 						//비밀번호 체크
-						if(password.equals(map.get(Constant.PASSWORD))) {
+						if(password.equals(map.get("password"))) {
 							jwt = Jwts.builder()
 								.setSubject(Constant.JWT_SUBJECT)
 								.setExpiration(new Date(System.currentTimeMillis() + 1800000L))
-								.claim(Constant.USER_NO, map.get(Constant.USER_NO))
-								.claim(Constant.USER_ID, map.get(Constant.USER_ID))
+								.claim("userNo", map.get("userNo"))
+								.claim("userId", map.get("userId"))
 								.signWith(
 									SignatureAlgorithm.HS256,
-									Constant.SIGN.getBytes(Constant.UTF_8)
+									Constant.SIGN.getBytes("UTF-8")
 								)
 								.compact();
 							
-							result.put(Constant.IS_LOGIN, true);
-							result.put(Constant.USER_ID, map.get(Constant.USER_ID));
-							result.put(Constant.JWT, jwt);
-							result.put(Constant.RESULT_CODE, Constant.RESULT_CODE_SUCCESS);
+							result.put("isLogin", true);
+							result.put("userId", map.get("userId"));
+							result.put("jwt", jwt);
+							result.put("resultCode", Constant.RESULT_CODE_SUCCESS);
 						}else {
-							result.put(Constant.IS_LOGIN, false);
-							result.put(Constant.RESULT_CODE, Constant.RESULT_CODE_DIFF_PASSWORD);
+							result.put("isLogin", false);
+							result.put("resultCode", Constant.RESULT_CODE_DIFF_PASSWORD);
 							jwt = null;
 						}
 					}catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
-						result.put(Constant.JWT, null);
-						result.put(Constant.RESULT_CODE, Constant.RESULT_CODE_SERVER_ERROR);
+						result.put("jwt", null);
+						result.put("resultCode", Constant.RESULT_CODE_SERVER_ERROR);
 					}
 					
 					//응답
@@ -113,28 +113,28 @@ public class LoginHandler {
 		try {
 			if(Objects.nonNull(request.cookies().get(Constant.TOKEN))) {
 				Jws<Claims> claims = Jwts.parser()
-					.setSigningKey(Constant.SIGN.getBytes(Constant.UTF_8))
+					.setSigningKey(Constant.SIGN.getBytes("UTF-8"))
 					.parseClaimsJws(request.cookies().get(Constant.TOKEN).get(0).getValue());
 					
-				result.put(Constant.IS_LOGIN, true);
-				result.put(Constant.USER_ID, claims.getBody().get(Constant.USER_ID));
+				result.put("isLogin", true);
+				result.put("userId", claims.getBody().get("userId"));
 			}else {
-				result.put(Constant.IS_LOGIN, false);
+				result.put("isLogin", false);
 			}			
 		//JWT 권한claim 검사가 실패했을 때
 		}catch (ClaimJwtException e) {			
-			result.put(Constant.IS_LOGIN, false);			
+			result.put("isLogin", false);			
 		//구조적인 문제가 있는 JWT인 경우
 		}catch (MalformedJwtException e) {			
-			result.put(Constant.IS_LOGIN, false);
+			result.put("isLogin", false);
 		//수신한 JWT의 형식이 애플리케이션에서 원하는 형식과 맞지 않는 경우
 		}catch (UnsupportedJwtException e) {			
-			result.put(Constant.IS_LOGIN, false);
+			result.put("isLogin", false);
 		//시그너처 연산이 실패하였거나, JWT의 시그너처 검증이 실패한 경우
 		}catch (SignatureException e) {			
-			result.put(Constant.IS_LOGIN, false);			
+			result.put("isLogin", false);			
 		}catch (IllegalArgumentException | UnsupportedEncodingException e) {			
-			result.put(Constant.IS_LOGIN, false);			
+			result.put("isLogin", false);			
 		}
 		
 		return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON)
