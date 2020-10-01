@@ -10,7 +10,7 @@ public class Constant {
 	public static final String UNDER_BAR = "_";
 	public static final String SLASH = "/";	
 	
-	public static final String RESULT_CODE_SUCCESS = "0100";
+	public static final String RESULT_CODE_SUCCESS = "0000";
 	public static final String RESULT_CODE_DIFF_PASSWORD = "0100";
 	public static final String RESULT_CODE_NO_USER = "0101";
 	public static final String RESULT_CODE_SERVER_ERROR = "9000";

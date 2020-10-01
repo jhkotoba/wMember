@@ -12,6 +12,7 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 
 @Configuration
 public class LoginRouter {	
+	
 	/**
 	 * page rooter
 	 * @param handler
