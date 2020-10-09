@@ -39,7 +39,10 @@ public class LoginRouter {
 				.and(RequestPredicates.accept(MediaType.APPLICATION_JSON)), loginHandler::loginProcess)
 			//세션정보 조회
 			.andRoute(RequestPredicates.POST("/api/member/getSession")
-				.and(RequestPredicates.accept(MediaType.APPLICATION_JSON)), loginHandler::getSession);		
+				.and(RequestPredicates.accept(MediaType.APPLICATION_JSON)), loginHandler::getSession)
+			//세션정보 조회(내부용)
+			.andRoute(RequestPredicates.POST("/api/member/getInnerSession")
+				.and(RequestPredicates.accept(MediaType.APPLICATION_JSON)), loginHandler::getInnerSession);
 	}
 	
 	/**

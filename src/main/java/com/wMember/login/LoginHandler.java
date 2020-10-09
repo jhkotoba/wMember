@@ -73,9 +73,9 @@ public class LoginHandler {
 						if(password.equals(map.get("password"))) {
 							jwt = Jwts.builder()
 								.setSubject(Constant.JWT_SUBJECT)
-								.setExpiration(new Date(System.currentTimeMillis() + 1800000L))
-								.claim("userNo", map.get("userNo"))
+								.setExpiration(new Date(System.currentTimeMillis() + 10800000L))
 								.claim("userId", map.get("userId"))
+								.claim("userSeq", map.get("userSeq"))
 								.signWith(
 									SignatureAlgorithm.HS256,
 									Constant.SIGN.getBytes("UTF-8")
@@ -118,6 +118,40 @@ public class LoginHandler {
 					
 				result.put("isLogin", true);
 				result.put("userId", claims.getBody().get("userId"));
+			}else {
+				result.put("isLogin", false);
+			}			
+		//JWT 권한claim 검사가 실패했을 때
+		}catch (ClaimJwtException e) {			
+			result.put("isLogin", false);			
+		//구조적인 문제가 있는 JWT인 경우
+		}catch (MalformedJwtException e) {			
+			result.put("isLogin", false);
+		//수신한 JWT의 형식이 애플리케이션에서 원하는 형식과 맞지 않는 경우
+		}catch (UnsupportedJwtException e) {			
+			result.put("isLogin", false);
+		//시그너처 연산이 실패하였거나, JWT의 시그너처 검증이 실패한 경우
+		}catch (SignatureException e) {			
+			result.put("isLogin", false);			
+		}catch (IllegalArgumentException | UnsupportedEncodingException e) {			
+			result.put("isLogin", false);			
+		}
+		
+		return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON)
+			.body(BodyInserters.fromValue(result));
+	}
+	
+	public Mono<ServerResponse> getInnerSession(ServerRequest request){		
+		Map<String, Object> result = new HashMap<String, Object>();
+		try {
+			if(Objects.nonNull(request.cookies().get(Constant.TOKEN))) {
+				Jws<Claims> claims = Jwts.parser()
+					.setSigningKey(Constant.SIGN.getBytes("UTF-8"))
+					.parseClaimsJws(request.cookies().get(Constant.TOKEN).get(0).getValue());
+					
+				result.put("isLogin", true);
+				result.put("userId", claims.getBody().get("userId"));
+				result.put("userSeq", claims.getBody().get("userSeq"));
 			}else {
 				result.put("isLogin", false);
 			}			
