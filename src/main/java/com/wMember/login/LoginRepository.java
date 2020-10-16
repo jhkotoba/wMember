@@ -18,14 +18,19 @@ public class LoginRepository {
 		this.client = databaseClient;
 	}
 	
-	public Mono<Map<String, Object>> selectUserConfirm(LoginModel model){
+	/**
+	 * 사용자 조회
+	 * @param model
+	 * @return
+	 */
+	public Mono<Map<String, Object>> selectUser(LoginModel model){
 		
 		StringBuilder query = new StringBuilder("SELECT USER_ID, USER_SEQ, PASSWORD, SALT FROM USER WHERE 1=1");
 		query.append(" AND USER_ID = '").append(model.getUserId()).append("'");
 		
-		return client.execute(query.toString()).fetch().one()			
+		return client.execute(query.toString()).fetch().one()
 			.map(map -> {
-				map.put("reqPassword", model.getPassword());
+				map.put("reqPassword", model.getPassword());				
 				return Utils.converterCamelCase(map);
 			});
 	}
