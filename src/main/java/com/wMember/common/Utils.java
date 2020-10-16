@@ -73,7 +73,7 @@ public class Utils {
 	 */
 	public static String converterCamelCaseString(String key) {
 		StringBuilder sBuilder = new StringBuilder();
-		String[] splitKey = key.split(Constant.UNDER_BAR);
+		String[] splitKey = key.split("_");
 		if(splitKey.length < 2){			
 			if(Utils.isStringAllUpper(splitKey[0])) {
 				return splitKey[0].toLowerCase();
