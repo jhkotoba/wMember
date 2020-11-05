@@ -32,7 +32,7 @@ public class LoginRouter {
 	 * @return
 	 */
 	@Bean
-	public RouterFunction<ServerResponse> apiRouter(LoginHandler loginHandler){
+	public RouterFunction<ServerResponse> loginRouter(LoginHandler loginHandler){
 		return RouterFunctions			
 			//로그인 프로세스
 			.route(RequestPredicates.POST("/api/member/loginProcess")
