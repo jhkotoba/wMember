@@ -83,12 +83,12 @@ public class LoginService {
 					)
 					.compact();
 				
-				result.put("isLogin", true);
+				result.put("loginYn", Constant.Y);
 				result.put("userId", map.get("userId"));
 				result.put("jwt", jwt);
 				result.put("resultCode", Constant.CODE_SUCCESS);
 			}else {
-				result.put("isLogin", false);
+				result.put("loginYn", Constant.N);
 				result.put("resultCode", Constant.CODE_DIFF_PASSWORD);
 				jwt = null;
 			}				
@@ -113,35 +113,35 @@ public class LoginService {
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
 			if(Objects.nonNull(request.cookies().get(Constant.TOKEN))) {
+				System.out.println("if");
 				Jws<Claims> claims = Jwts.parser()
 					.setSigningKey(Constant.SIGN.getBytes("UTF-8"))
 					.parseClaimsJws(request.cookies().get(Constant.TOKEN).get(0).getValue());
-					
-				result.put("isLogin", true);
+				
+				result.put("loginYn", Constant.Y);
 				result.put("userId", claims.getBody().get("userId"));
 				
 				if(isInner) {
 					result.put("userSeq", claims.getBody().get("userSeq"));
 				}
 			}else {
-				result.put("isLogin", false);
-			}			
+				result.put("loginYn", Constant.Y);
+			}
 		//JWT 권한claim 검사가 실패했을 때
-		}catch (ClaimJwtException e) {			
-			result.put("isLogin", false);			
+		}catch (ClaimJwtException e) {
+			result.put("loginYn", Constant.N);
 		//구조적인 문제가 있는 JWT인 경우
-		}catch (MalformedJwtException e) {			
-			result.put("isLogin", false);
+		}catch (MalformedJwtException e) {
+			result.put("loginYn", Constant.N);
 		//수신한 JWT의 형식이 애플리케이션에서 원하는 형식과 맞지 않는 경우
 		}catch (UnsupportedJwtException e) {			
-			result.put("isLogin", false);
+			result.put("loginYn", Constant.N);
 		//시그너처 연산이 실패하였거나, JWT의 시그너처 검증이 실패한 경우
 		}catch (SignatureException e) {			
-			result.put("isLogin", false);			
+			result.put("loginYn", Constant.N);
 		}catch (IllegalArgumentException | UnsupportedEncodingException e) {			
-			result.put("isLogin", false);			
+			result.put("loginYn", Constant.N);
 		}
-		
 		return result;
 	}
 	

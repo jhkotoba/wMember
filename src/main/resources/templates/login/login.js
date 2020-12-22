@@ -22,7 +22,7 @@ function login(){
     .then(response => response.json())            
     .then(data => {
 		console.log("data:", data);
-		if(data.isLogin){		
+		if(data.loginYn === "Y"){		
 			document.location.href = 
 				document.location.href.substring(document.location.href.lastIndexOf("rtnUrl") + 7, document.location.href.length);
 		

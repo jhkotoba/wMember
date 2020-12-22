@@ -10,6 +10,7 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
+import com.wMember.common.Constant;
 import com.wMember.common.Utils;
 
 import reactor.core.publisher.Mono;
@@ -44,7 +45,7 @@ public class LoginHandler {
 		    })
 			.onErrorResume(error -> {
 				Map<String, Object> result = new HashMap<String, Object>();
-				result.put("isLogin", false);
+				result.put("loginYn", Constant.Y);
 				result.put("resultCode", error.getMessage());
 				return ServerResponse.ok()						
 						.contentType(MediaType.APPLICATION_JSON)
@@ -69,7 +70,7 @@ public class LoginHandler {
 	 */
 	public Mono<ServerResponse> getInnerSession(ServerRequest request){			
 		return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON)
-				.body(BodyInserters.fromValue(loginService.getInnerSession(request)));
+			.body(BodyInserters.fromValue(loginService.getInnerSession(request)));
 	}
 }
 
