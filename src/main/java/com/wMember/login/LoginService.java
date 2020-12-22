@@ -113,7 +113,6 @@ public class LoginService {
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
 			if(Objects.nonNull(request.cookies().get(Constant.TOKEN))) {
-				System.out.println("if");
 				Jws<Claims> claims = Jwts.parser()
 					.setSigningKey(Constant.SIGN.getBytes("UTF-8"))
 					.parseClaimsJws(request.cookies().get(Constant.TOKEN).get(0).getValue());
