@@ -20,7 +20,7 @@ public interface Constant {
 	public static final String CODE_REPOSITORY_ERROR = "9001";
 	public static final String CODE_INSERT_EMPTY_ERROR = "9001";
 	public static final String CODE_UTIL_CONVERTER_ERROR = "9002";
-	public static final String CODE_UNKNOWN_ERROR = "9444";
+	public static final String CODE_UNKNOWN_ERROR = "9999";
 	
 	/* member */
 	public static final String TOKEN = "SESSION_TOKEN";	
