@@ -2,16 +2,16 @@ package com.wMember.login;
 
 public class LoginModel {
 
-	private Integer userSeq;
+	private Integer userIdx;
 	private String userNo;
 	private String userId;
 	private String password;
 	
-	public Integer getUserSeq() {
-		return userSeq;
+	public Integer getUserIdx() {
+		return userIdx;
 	}
-	public void setUserSeq(Integer userSeq) {
-		this.userSeq = userSeq;
+	public void setUserIdx(Integer userIdx) {
+		this.userIdx = userIdx;
 	}
 	public String getUserNo() {
 		return userNo;

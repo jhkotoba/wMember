@@ -76,7 +76,7 @@ public class LoginService {
 					.setSubject(Constant.JWT_SUBJECT)
 					.setExpiration(new Date(System.currentTimeMillis() + 10800000L))
 					.claim("userId", map.get("userId"))
-					.claim("userSeq", map.get("userSeq"))
+					.claim("userNo", map.get("userNo"))
 					.signWith(
 						SignatureAlgorithm.HS256,
 						Constant.SIGN.getBytes("UTF-8")
@@ -121,7 +121,7 @@ public class LoginService {
 				result.put("userId", claims.getBody().get("userId"));
 				
 				if(isInner) {
-					result.put("userSeq", claims.getBody().get("userSeq"));
+					result.put("userNo", claims.getBody().get("userNo"));
 				}
 			}else {
 				result.put("loginYn", Constant.Y);
